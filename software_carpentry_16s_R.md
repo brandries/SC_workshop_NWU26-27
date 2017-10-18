@@ -13,7 +13,7 @@ Sequencing allowed us to get all the members in the communities' genes.
 
 We covered rarefaction. Why do that?
 This allows us to get an 'equal' sampling depth per community, not counting more in one sample than the other. 
-<Bianca, hier neem ek maar aan dat die rarefaction klaar gedoen is, en ek sommer net kan aan gaan? Is die singletons geremove?>
+<--!Bianca, hier neem ek maar aan dat die rarefaction klaar gedoen is, en ek sommer net kan aan gaan? Is die singletons geremove?-->
 ##Our data
 <!--Bianca, ons moet begin met 'n OTU table in tsv formaat, ek het dit sommer gemaak met: biom convert -i ninja_otutable.biom --to-tsv --header-key "taxonomy" -o ninja_otutable.txt
 Ek is nog so bietjie deurmekaar waar presies ek gaan in slot in terme van die files waarmee ek begin, I.e., hoe skoon die data gaan wees, of moet ek dit nog skoon maak? Meestal omdat the biom convert jou los met 'n header: # Constructed from biom, wat net uitgehaal moet word in excel of so iets-->
