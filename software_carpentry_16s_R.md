@@ -1,6 +1,6 @@
-#This is a md file for the R course in 16S amplicon presented at the NWU on the 25-28 October
+# This is a md file for the R course in 16S amplicon presented at the NWU on the 25-28 October
 
-###Lets start with some basics in statistics and touch up on the "Microbial Ecology" we are investigating
+### Lets start with some basics in statistics and touch up on the "Microbial Ecology" we are investigating
 
 Microbial ecology is the study of microorganisms in their natural environments.
 
@@ -17,15 +17,15 @@ This allows us to get an 'equal' sampling depth per community, not counting more
 ##Our data
 <!--Bianca, ons moet begin met 'n OTU table in tsv formaat, ek het dit sommer gemaak met: biom convert -i ninja_otutable.biom --to-tsv --header-key "taxonomy" -o ninja_otutable.txt
 Ek is nog so bietjie deurmekaar waar presies ek gaan in slot in terme van die files waarmee ek begin, I.e., hoe skoon die data gaan wees, of moet ek dit nog skoon maak? Meestal omdat the biom convert jou los met 'n header: # Constructed from biom, wat net uitgehaal moet word in excel of so iets-->
-####In R, we need to specify the packages we are going to use
+#### In R, we need to specify the packages we are going to use
 This is a simple script which load all the variables we are going to use in one go:
 ```
-#load pacakges into R 
+# load pacakges into R 
 libs <- c("ggplot2", "tidyverse", "vegan", "phyloseq", "gplots", "venneuler", "reshape")
 lapply(libs, require, character.only = TRUE)
 ```
 
-####We first need to read our data into R 
+#### We first need to read our data into R 
 ```
 #Set working directory
 setwd("~/Software_carpentry_course/otu_table/")
@@ -65,13 +65,13 @@ otus_physeq
 
 ```
 
-##What questions can we ask with the data we have?
+## What questions can we ask with the data we have?
 
 
-###Diversity based
+### Diversity based
 
 
-####Alpha diversity
+#### Alpha diversity
 Well first of all, we want to understand how many 'species' are present in a given environment?
 	This allows us to compare it to other environments, seeing if it is more or less diverse, and is it as diverse as expected?
 
@@ -88,7 +88,7 @@ names(alpha) <-c("alpha")
 
 
 
-#####Test the differences in diversities between variables
+##### Test the differences in diversities between variables
 It is now possible to test if these diversities are significantly different between sampling sites using an analysis of variance.
 ```
 attach(alpha)
@@ -96,13 +96,13 @@ ANOVA1 <-aov(alpha~type)
 summary(ANOVA1)
 TukeyHSD(ANOVA1)
 ```
-####**Challenge**
+#### **Challenge**
 We get species number, which is what you tested, how would you change it to be for Shannon diversity, Simpson and Inverse Simpson?
 
 These measures all give a good estimate of the number and distribution of species within a single sample. 
 But what if we want to have a look at more than one sample?
 
-####Gamma diversty
+#### Gamma diversty
 Before assessing beta diversity, which I will explain next, it is important that we get to gamma diversity.
 Gamma diversity is samply the total diversity of an environment, or sampling group:
 ```
@@ -110,7 +110,7 @@ gamma <-specnumber(otu_table, type)
 gamma
 ```
 
-####Beta diversity
+#### Beta diversity
 To assess how different samples are within sampling groups, we use beta diversity.
 This measure gives an overall impression of how similar samples are, within a defined group. 
 
@@ -138,7 +138,7 @@ beta_ko <- gamma[2]/ko
 beta_wt <- gamma[3]/wt 
 ```
 
-#####Test the diversities
+##### Test the diversities
 It is again possible to test if these diversities are significantly different between sampling sites using an analysis of variance.
 ```
 beta_all <-data.frame(c(beta_het, beta_ko, beta_wt), mapping_file)
@@ -153,7 +153,7 @@ This makes the practice of comparing beta diversities between studies undesirabl
 
 
 
-###Community structure based
+### Community structure based
 These methods are still diversity based, assessing beta-diversity, but the underlying statistics uses whole community data.
 #####Transformation
 We need to transform community data, this allows us to compare 'apples with apples'
@@ -161,14 +161,14 @@ We need to transform community data, this allows us to compare 'apples with appl
 otu_transf <- decostand(otu_table, "hellinger")
 ```
 
-###Other ways of visualizing beta diversity
+### Other ways of visualizing beta diversity
 While the values of beta diversity provides a great way to "look" at how dissimilar or similar your samples are, 
 it is not intuative, and you will not be able to explain it to someone outside of microbial ecology. 
 
 Within statistics there are numerous ways to visualize multidimentional data, I hope some of you are familiar with them, which simplifies the description of beta diversity, or the differences between samples.
 
 Generally PCA and NMDS is most widely used:
-####PCA
+#### PCA
 Principal Component Analysis is a commonly used dimentionality reduction technique. With the use of multiple regressions between each of the "dimentions" which is actually only your OTUs/species, the techniques tries to explain as much of the variation as possible on as few new axes, called (principal components).
 
 With this statistical test, the amount of variation explained by each principal component is given.
@@ -177,7 +177,7 @@ We typically only use the first two components, as this allows visualization on 
 The only assumption of this test as with may other is normality
 Biological and specifically microbial community data are not assumed to be normal, and we use a non-parametric approach instead. 
 
-####NMDS
+#### NMDS
 A nonparametric alternative to PCA is Non-metric Multidimentional Scaling.
 This method models the data in multidimentional space, and tries to find a plane which best intersects the data, minimizing the variance around the axes. 
 
@@ -227,13 +227,13 @@ plot_1 <- ggplot() +
 ```
 In both these methods the distance between two points indicate the relationship between samples. 
 
-####RDA
+#### RDA
 A third way of visualizing the data will be through an Redundancy analysis. 
 This method is also parametric, but allows the incorporation of environmental viarables. 
 This shows how much variation each of the variable explain.
 However, for this we need continuous variables for explanation of biological data, and we do not have any for this dataset.
 
-####Venn
+#### Venn
 We can also assess the comonalities of microbial communities through venn diagrams
 This shows how members are shared between sampling sites/groups
 ```
@@ -250,7 +250,7 @@ plot<- venneuler(comb > 0)
 plot(plot)
 ```
 
-####Permanova
+#### Permanova
 This is a permutational multi-variate analysis of variance. 
 It allows us to assess if the entire community is different between sites, using the basics of analysis of variance, and applying it to multiple variables and non-parametric data. 
 
@@ -260,8 +260,8 @@ We can fine tune the model, as we need a model:
 
 `adonis(otu_trans~location)`
 
-###Taxonomy based
-####Barplots
+### Taxonomy based
+#### Barplots
 One of the main objectives of microbial ecology is to understand WHO is in an environment. 
 This is allowed by using taxonomic databases, with assigned taxonomy. 
 One of the most simple ways of looking at this is through barplots
@@ -301,12 +301,12 @@ plot1 <- ggplot() +
         panel.background = element_blank())
 ```
 
-####Multiple regressions
+#### Multiple regressions
 If we have environmental parameters, we could compare them to each of the taxa found, at various taxonomic levels. 
 I.e., does age correlate with Proteobacteria?
 Again we do not have continuous variable for the data, and can't do this
 
-###Microbial community interactions based
+### Microbial community interactions based
 This section actually needs an entire course on its own. But I will try to make it as easy as possible, please read the papers if you want to know more. 
 
 We can infer putative microbial community interactions through co-occurrance. This has mostly been done through multiple regressions and correlations. Simply put, if a species have a signficant correlation, they cooccur.
