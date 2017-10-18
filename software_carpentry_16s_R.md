@@ -13,8 +13,11 @@ Sequencing allowed us to get all the members in the communities' genes.
 
 We covered rarefaction. Why do that?
 This allows us to get an 'equal' sampling depth per community, not counting more in one sample than the other. 
-<--!Bianca, hier neem ek maar aan dat die rarefaction klaar gedoen is, en ek sommer net kan aan gaan? Is die singletons geremove?-->
-##Our data
+
+<!--Bianca, hier neem ek maar aan dat die rarefaction klaar gedoen is, en ek sommer net kan aan gaan? Is die singletons geremove?-->
+
+## Our data
+
 <!--Bianca, ons moet begin met 'n OTU table in tsv formaat, ek het dit sommer gemaak met: biom convert -i ninja_otutable.biom --to-tsv --header-key "taxonomy" -o ninja_otutable.txt
 Ek is nog so bietjie deurmekaar waar presies ek gaan in slot in terme van die files waarmee ek begin, I.e., hoe skoon die data gaan wees, of moet ek dit nog skoon maak? Meestal omdat the biom convert jou los met 'n header: # Constructed from biom, wat net uitgehaal moet word in excel of so iets-->
 #### In R, we need to specify the packages we are going to use
@@ -114,7 +117,7 @@ gamma
 To assess how different samples are within sampling groups, we use beta diversity.
 This measure gives an overall impression of how similar samples are, within a defined group. 
 
-To make it sample, beta diversity is simply gamma/alpha. 
+To make it simple, beta diversity is simply gamma/alpha. 
 This means two things, each sample will have its own beta diversity, giving its similarity/dissimilarity to its defined group.
 
 The second is better explained by an example:
@@ -203,8 +206,8 @@ attach(mapping_file)
 #plot using ggplot
 #set the colors and shapes
 cols = rainbow(3)
-#change to the ones which has the black edges
-shps = c(22, 21, 24)
+#change shapes using pch numbers
+shps = c(22, 21)
 
 plot_1 <- ggplot() +
   geom_point(data = data.scores, aes(x = NMDS1, y = NMDS2, fill = type, shape = location), size = 6) + 
@@ -234,7 +237,7 @@ This shows how much variation each of the variable explain.
 However, for this we need continuous variables for explanation of biological data, and we do not have any for this dataset.
 
 #### Venn
-We can also assess the comonalities of microbial communities through venn diagrams
+We can also assess the comonalities of microbial communities through venn diagrams.
 This shows how members are shared between sampling sites/groups
 ```
 #Venn diagram
