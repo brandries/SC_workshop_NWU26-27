@@ -182,7 +182,7 @@ This value has to be below 0.2 to remain statistically viable.
 
 ```
 #Bray curtis distance matrix in vegan
-vegdist(t(otu_transf), "bray") -> d
+vegdist(otu_transf, "bray") -> d
 
 #Perform the multidimensional scaling using metaMDS
 fit <- metaMDS(d, "bray", k = 2, trymax = 1)
