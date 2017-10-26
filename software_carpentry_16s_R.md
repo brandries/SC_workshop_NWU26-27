@@ -45,7 +45,7 @@ install.github("zdk123/SpiecEasi")
 Download all the data we need for analysis [here](https://github.com/brandries/SC_workshop_NWU26-27/archive/master.zip)
 ```
 #Set working directory
-setwd("~/Software_carpentry_course/otu_table/")
+setwd("~/Downloads/SC_workshop_NWU26-27-master/data")
 
 #Load OTU table into R and check dimensions
 otu_table <- read.delim("./ninja_otutable_format.txt", header = T, row.names = 1)
