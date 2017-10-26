@@ -30,7 +30,7 @@ lapply(libs, require, character.only = TRUE)
 setwd("~/Software_carpentry_course/otu_table/")
 
 #Load OTU table into R and check dimensions
-otu_table <- read.delim("./ninja_otutable_format.txt", header = T, row.names = 1)
+otu_table <- read.delim("./ninja_otutable.txt", header = T, row.names = 1)
 str(otu_table)
 
 #Read last col, and remove if taxonomy
