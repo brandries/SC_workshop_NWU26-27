@@ -23,6 +23,23 @@ This is a simple script which load all the packages we are going to use in one g
 libs <- c("ggplot2", "tidyverse", "vegan", "phyloseq", "gplots", "venneuler", "reshape")
 lapply(libs, require, character.only = TRUE)
 ```
+Some of these packages will not be installed on your computers yet. You install them with the install.packages() function
+```
+install.packages("ggplot2", "devtools")
+```
+
+There are also packages that is not available within the R database, and they have to be installed from a repository called Bioconductor
+
+```
+source("https://bioconductor.org/biocLite.R")
+biocLite("phyloseq")
+```
+
+And some packages are even more difficult, and have to be installed form github
+
+```
+install.github("zdk123/SpiecEasi")
+```
 
 #### We first need to read our data into R 
 ```
