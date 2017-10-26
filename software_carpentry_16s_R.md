@@ -30,7 +30,7 @@ lapply(libs, require, character.only = TRUE)
 setwd("~/Software_carpentry_course/otu_table/")
 
 #Load OTU table into R and check dimensions
-otu_table <- read.delim("./ninja_otutable.txt", header = T, row.names = 1)
+otu_table <- read.delim("./ninja_otutable_format.txt", header = T, row.names = 1)
 str(otu_table)
 
 #Read last col, and remove if taxonomy
@@ -38,7 +38,7 @@ otu_table[,length(otu_table)]
 otu_table <- as.data.frame(t(otu_table[,1:length(otu_table)-1]))
 
 #Load mapping file containing groups for samples and make it available for R in the global environment
-mapping_file <- read.delim("./mouse_mapfile_order.txt", header = T, row.names = 1)
+mapping_file <- read.delim("./mapping_file_format.txt", header = T, row.names = 1)
 attach(mapping_file)
 ```
 We will also be using a package called phyloseq, that requires the data to be loaded into an object specific to the package:
