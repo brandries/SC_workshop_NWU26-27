@@ -38,7 +38,7 @@ otu_table[,length(otu_table)]
 otu_table <- as.data.frame(t(otu_table[,1:length(otu_table)-1]))
 
 #Load mapping file containing groups for samples and make it available for R in the global environment
-mapping_file <- read.delim("./mapping_file_format.txt", header = T, row.names = 1)
+mapping_file <- read.delim("./mouse_mapfile_order.txt", header = T, row.names = 1)
 attach(mapping_file)
 ```
 We will also be using a package called phyloseq, that requires the data to be loaded into an object specific to the package:
