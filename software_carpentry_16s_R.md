@@ -60,6 +60,7 @@ mapping_file <- read.delim("./mapping_file_format.txt", header = T, row.names = 
 attach(mapping_file)
 ```
 We will also be using a package called phyloseq, that requires the data to be loaded into an object specific to the package:
+We need the following datasets as well [taxonomy_phyloseq.txt](https://github.com/brandries/SC_workshop_NWU26-27/blob/master/taxonomy_phyloseq.txt)
 ```
 #Create a phyloseq object which we need for some of the analyses
 #Read the otu table, mapping file (already done) and reference taxonomy sets - the assigned taxonomy by QIIME
@@ -278,6 +279,7 @@ We can fine tune the model, as we need a model:
 One of the main objectives of microbial ecology is to understand WHO is in an environment. 
 This is allowed by using taxonomic databases, with assigned taxonomy. 
 One of the most simple ways of looking at this is through barplots.
+And the file we need is [otu_table_tax_L2.txt](https://github.com/brandries/SC_workshop_NWU26-27/blob/master/ninja_otutable_L2.txt)
 ```
 #Load summarized dataset
 otu_table_tax_l2 <- read.delim("./ninja_otutable_L2.txt", header = T, row.names = 1)
@@ -349,7 +351,7 @@ spiec.out=spiec.easi(otus_wt_physeq , method="mb", lambda.min.ratio = 1e-2, nlam
 spiec.graph=adj2igraph(spiec.out$refit, vertex.attr=list(name=taxa_names(otus_wt_physeq )))
 plot_network(spiec.graph, otus_wt_physeq , type='taxa', color="Phylum", label=NULL)
 ```
-And this output is best visualized in Cytoscape.
+And this output is best visualized in Cytoscape, available at [Cytoscape](http://www.cytoscape.org/download.php)
 Remember to do this for both networks.
 
 ```
