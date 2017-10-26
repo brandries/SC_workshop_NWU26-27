@@ -25,7 +25,7 @@ lapply(libs, require, character.only = TRUE)
 ```
 Some of these packages will not be installed on your computers yet. You install them with the install.packages() function
 ```
-install.packages("ggplot2", "devtools")
+install.packages("ggplot2", "tidyverse", "vegan", "gplots", "venneuler", "reshape", "devtools")
 ```
 
 There are also packages that is not available within the R database, and they have to be installed from a repository called Bioconductor
