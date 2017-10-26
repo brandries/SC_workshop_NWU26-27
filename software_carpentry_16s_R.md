@@ -42,6 +42,7 @@ install.github("zdk123/SpiecEasi")
 ```
 
 #### We first need to read our data into R 
+We need the following files [ninja_otutable_format.txt](https://github.com/brandries/SC_workshop_NWU26-27/blob/master/ninja_otutable_format.txt) and [mapping_file_format.txt](https://github.com/brandries/SC_workshop_NWU26-27/blob/master/mapping_file_format.txt)
 ```
 #Set working directory
 setwd("~/Software_carpentry_course/otu_table/")
