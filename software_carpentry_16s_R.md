@@ -23,14 +23,32 @@ This is a simple script which load all the packages we are going to use in one g
 libs <- c("ggplot2", "tidyverse", "vegan", "phyloseq", "gplots", "venneuler", "reshape")
 lapply(libs, require, character.only = TRUE)
 ```
+Some of these packages will not be installed on your computers yet. You install them with the install.packages() function
+```
+install.packages("ggplot2", "tidyverse", "vegan", "gplots", "venneuler", "reshape", "devtools", "stringi", "irlba", "magrittr", "pkgconfig", "igraph", "huge", "VGAM")
+```
+
+There are also packages that is not available within the R database, and they have to be installed from a repository called Bioconductor
+
+```
+source("https://bioconductor.org/biocLite.R")
+biocLite("phyloseq")
+```
+
+And some packages are even more difficult, and have to be installed form github
+
+```
+install.github("zdk123/SpiecEasi")
+```
 
 #### We first need to read our data into R 
+Download all the data we need for analysis [here](https://github.com/brandries/SC_workshop_NWU26-27/archive/master.zip)
 ```
 #Set working directory
-setwd("~/Software_carpentry_course/otu_table/")
+setwd("~/Downloads/SC_workshop_NWU26-27-master/data")
 
 #Load OTU table into R and check dimensions
-otu_table <- read.delim("./ninja_otutable_format.txt", header = T, row.names = 1)
+otu_table <- read.delim("./ninja_otutable.txt", header = T, row.names = 1)
 str(otu_table)
 
 #Read last col, and remove if taxonomy
@@ -38,10 +56,11 @@ otu_table[,length(otu_table)]
 otu_table <- as.data.frame(t(otu_table[,1:length(otu_table)-1]))
 
 #Load mapping file containing groups for samples and make it available for R in the global environment
-mapping_file <- read.delim("./mapping_file_format.txt", header = T, row.names = 1)
+mapping_file <- read.delim("./mouse_mapfile_order.txt", header = T, row.names = 1)
 attach(mapping_file)
 ```
 We will also be using a package called phyloseq, that requires the data to be loaded into an object specific to the package:
+
 ```
 #Create a phyloseq object which we need for some of the analyses
 #Read the otu table, mapping file (already done) and reference taxonomy sets - the assigned taxonomy by QIIME
@@ -125,23 +144,35 @@ beta.whittaker <-gamma/alpha.mean
 #First create separate dataframes with each of the sites
 #Then calculate the beta diversity of each of the sites individually
 
-het <- alpha[1:4,]
-ko <- alpha[5:62,]
-wt <- alpha[63:116,]
+attach(mapping_file)
 
-beta_het <- gamma[1]/het
-beta_ko <- gamma[2]/ko
-beta_wt <- gamma[3]/wt 
+chemerin_KO <- filter(alpha, Genotype=="chemerin_KO")
+CMKLR1_HE <- filter(alpha, Genotype=="CMKLR1_HE")
+CMKLR1_KO <- filter(alpha, Genotype=="CMKLR1_KO")
+WT <- filter(alpha, Genotype=="WT")
+
+
+beta_che <- gamma[1]/chemerin_KO
+beta_CMK_HE <- gamma[2]/CMKLR1_HE
+beta_CMK_KO <- gamma[3]/CMKLR1_KO 
+beta_wt <- gamma[4]/WT
+
+chemerin_KO_m <- filter(mapping_file, Genotype=="chemerin_KO")
+CMKLR1_HE_m <- filter(mapping_file, Genotype=="CMKLR1_HE")
+CMKLR1_KO_m <- filter(mapping_file, Genotype=="CMKLR1_KO")
+WT_m <- filter(mapping_file, Genotype=="WT")
+
+
 ```
 
 ##### Test the diversities
 It is again possible to test if these diversities are significantly different between sampling sites using an analysis of variance.
 ```
-beta_all <-data.frame(c(beta_het, beta_ko, beta_wt), mapping_file)
+beta_all <-data.frame(cbind(rbind(beta_che, beta_CMK_HE, beta_CMK_KO, beta_wt), rbind(chemerin_KO_m, CMKLR1_HE_m, CMKLR1_KO_m, WT_m)))
 names(beta_all)<-c("beta","type")
-anova.beta <-aov(beta ~type, data=beta_all)
+anova.beta <-aov(beta ~Genotype, data=beta_all)
 summary(anova.beta)
-TukeyHSD(anova.beta)
+TukeyHSD(anova.beta) 
 ```
 
 With this you will note that beta is dependent on sample number and the group size. 
@@ -182,7 +213,7 @@ This value has to be below 0.2 to remain statistically viable.
 
 ```
 #Bray curtis distance matrix in vegan
-vegdist(t(otu_transf), "bray") -> d
+vegdist(otu_transf, "bray") -> d
 
 #Perform the multidimensional scaling using metaMDS
 fit <- metaMDS(d, "bray", k = 2, trymax = 1)
@@ -260,6 +291,7 @@ We can fine tune the model, as we need a model:
 One of the main objectives of microbial ecology is to understand WHO is in an environment. 
 This is allowed by using taxonomic databases, with assigned taxonomy. 
 One of the most simple ways of looking at this is through barplots.
+
 ```
 #Load summarized dataset
 otu_table_tax_l2 <- read.delim("./ninja_otutable_L2.txt", header = T, row.names = 1)
@@ -331,7 +363,7 @@ spiec.out=spiec.easi(otus_wt_physeq , method="mb", lambda.min.ratio = 1e-2, nlam
 spiec.graph=adj2igraph(spiec.out$refit, vertex.attr=list(name=taxa_names(otus_wt_physeq )))
 plot_network(spiec.graph, otus_wt_physeq , type='taxa', color="Phylum", label=NULL)
 ```
-And this output is best visualized in Cytoscape.
+And this output is best visualized in Cytoscape, available at [Cytoscape](http://www.cytoscape.org/download.php)
 Remember to do this for both networks.
 
 ```
