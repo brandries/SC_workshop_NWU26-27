@@ -42,7 +42,7 @@ install.github("zdk123/SpiecEasi")
 ```
 
 #### We first need to read our data into R 
-We need the following files [ninja_otutable_format.txt](https://github.com/brandries/SC_workshop_NWU26-27/blob/master/ninja_otutable_format.txt) and [mapping_file_format.txt](https://github.com/brandries/SC_workshop_NWU26-27/blob/master/mapping_file_format.txt)
+Download all the data we need for analysis [here](https://github.com/brandries/SC_workshop_NWU26-27/archive/master.zip)
 ```
 #Set working directory
 setwd("~/Software_carpentry_course/otu_table/")
@@ -60,7 +60,7 @@ mapping_file <- read.delim("./mapping_file_format.txt", header = T, row.names = 
 attach(mapping_file)
 ```
 We will also be using a package called phyloseq, that requires the data to be loaded into an object specific to the package:
-We need the following datasets as well [taxonomy_phyloseq.txt](https://github.com/brandries/SC_workshop_NWU26-27/blob/master/taxonomy_phyloseq.txt)
+
 ```
 #Create a phyloseq object which we need for some of the analyses
 #Read the otu table, mapping file (already done) and reference taxonomy sets - the assigned taxonomy by QIIME
@@ -279,7 +279,7 @@ We can fine tune the model, as we need a model:
 One of the main objectives of microbial ecology is to understand WHO is in an environment. 
 This is allowed by using taxonomic databases, with assigned taxonomy. 
 One of the most simple ways of looking at this is through barplots.
-And the file we need is [otu_table_tax_L2.txt](https://github.com/brandries/SC_workshop_NWU26-27/blob/master/ninja_otutable_L2.txt)
+
 ```
 #Load summarized dataset
 otu_table_tax_l2 <- read.delim("./ninja_otutable_L2.txt", header = T, row.names = 1)
