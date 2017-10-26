@@ -48,7 +48,7 @@ Download all the data we need for analysis [here](https://github.com/brandries/S
 setwd("~/Downloads/SC_workshop_NWU26-27-master/data")
 
 #Load OTU table into R and check dimensions
-otu_table <- read.delim("./ninja_otutable_format.txt", header = T, row.names = 1)
+otu_table <- read.delim("./ninja_otutable.txt", header = T, row.names = 1)
 str(otu_table)
 
 #Read last col, and remove if taxonomy
@@ -56,7 +56,7 @@ otu_table[,length(otu_table)]
 otu_table <- as.data.frame(t(otu_table[,1:length(otu_table)-1]))
 
 #Load mapping file containing groups for samples and make it available for R in the global environment
-mapping_file <- read.delim("./mapping_file_format.txt", header = T, row.names = 1)
+mapping_file <- read.delim("./mouse_mapfile_order.txt", header = T, row.names = 1)
 attach(mapping_file)
 ```
 We will also be using a package called phyloseq, that requires the data to be loaded into an object specific to the package:
@@ -144,23 +144,35 @@ beta.whittaker <-gamma/alpha.mean
 #First create separate dataframes with each of the sites
 #Then calculate the beta diversity of each of the sites individually
 
-het <- alpha[1:4,]
-ko <- alpha[5:62,]
-wt <- alpha[63:116,]
+attach(mapping_file)
 
-beta_het <- gamma[1]/het
-beta_ko <- gamma[2]/ko
-beta_wt <- gamma[3]/wt 
+chemerin_KO <- filter(alpha, Genotype=="chemerin_KO")
+CMKLR1_HE <- filter(alpha, Genotype=="CMKLR1_HE")
+CMKLR1_KO <- filter(alpha, Genotype=="CMKLR1_KO")
+WT <- filter(alpha, Genotype=="WT")
+
+
+beta_che <- gamma[1]/chemerin_KO
+beta_CMK_HE <- gamma[2]/CMKLR1_HE
+beta_CMK_KO <- gamma[3]/CMKLR1_KO 
+beta_wt <- gamma[4]/WT
+
+chemerin_KO_m <- filter(mapping_file, Genotype=="chemerin_KO")
+CMKLR1_HE_m <- filter(mapping_file, Genotype=="CMKLR1_HE")
+CMKLR1_KO_m <- filter(mapping_file, Genotype=="CMKLR1_KO")
+WT_m <- filter(mapping_file, Genotype=="WT")
+
+
 ```
 
 ##### Test the diversities
 It is again possible to test if these diversities are significantly different between sampling sites using an analysis of variance.
 ```
-beta_all <-data.frame(c(beta_het, beta_ko, beta_wt), mapping_file)
+beta_all <-data.frame(cbind(rbind(beta_che, beta_CMK_HE, beta_CMK_KO, beta_wt), rbind(chemerin_KO_m, CMKLR1_HE_m, CMKLR1_KO_m, WT_m)))
 names(beta_all)<-c("beta","type")
-anova.beta <-aov(beta ~type, data=beta_all)
+anova.beta <-aov(beta ~Genotype, data=beta_all)
 summary(anova.beta)
-TukeyHSD(anova.beta)
+TukeyHSD(anova.beta) 
 ```
 
 With this you will note that beta is dependent on sample number and the group size. 
