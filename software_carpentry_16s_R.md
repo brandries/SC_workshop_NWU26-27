@@ -264,17 +264,28 @@ However, for this we need continuous variables for explanation of biological dat
 We can also assess the comonalities of microbial communities through venn diagrams.
 This shows how members are shared between sampling sites/groups.
 ```
-#Venn diagram
+rownames_to_column(otu_table, var = "names") -> otu_table
 
-otu_table_t <- t(otu_table)
-comb <-data.frame(cbind(rowSums(otu_table_t[,1:4]), rowSums(otu_table_t[,5:62]), rowSums(otu_table_t[,63:116]))>0)
-names(comb)<-c("Het", "KO", "WT")
+chemerin_KO_m <- filter(otu_table, Genotype=="chemerin_KO")
+CMKLR1_HE_m <- filter(otu_table, Genotype=="CMKLR1_HE")
+CMKLR1_KO_m <- filter(otu_table, Genotype=="CMKLR1_KO")
+WT_m <- filter(otu_table, Genotype=="WT")
+
+row.names(CMKLR1_HE_m) <- CMKLR1_HE_m$names
+CMKLR1_HE_m <- t(CMKLR1_HE_m[,2:length(CMKLR1_HE_m)])
+row.names(CMKLR1_KO_m) <- CMKLR1_KO_m$names
+CMKLR1_KO_m <- t(CMKLR1_KO_m[,2:length(CMKLR1_KO_m)])
+row.names(WT_m) <- WT_m$names
+WT_m <- t(WT_m[,2:length(WT_m)])
+row.names(chemerin_KO_m) <- chemerin_KO_m$names
+chemerin_KO_m <- t(chemerin_KO_m[,2:length(chemerin_KO_m)])
+
+rowSums(chemerin_KO_m) -> f
+
+
+comb <-data.frame(cbind(rowSums(chemerin_KO_m), rowSums(CMKLR1_HE_m), rowSums(CMKLR1_KO_m), rowSums(WT_m))>0)
+names(comb)<-c("Chemerin_KO", "CMKLR1_HE", "CMKLR1_KO", "WT")
 venn(comb)
-
-#Or draw using venneuler
-
-plot<- venneuler(comb > 0)
-plot(plot)
 ```
 
 #### Permanova
