@@ -25,7 +25,7 @@ lapply(libs, require, character.only = TRUE)
 ```
 Some of these packages will not be installed on your computers yet. You install them with the install.packages() function
 ```
-install.packages("ggplot2", "tidyverse", "vegan", "gplots", "venneuler", "reshape", "devtools", "stringi", "irlba", "magrittr", "pkgconfig", "igraph", "huge", "VGAM")
+install.packages(c("ggplot2", "tidyverse", "vegan", "gplots", "venneuler", "reshape", "devtools", "stringi", "irlba", "magrittr", "pkgconfig", "igraph", "huge", "VGAM"))
 ```
 
 There are also packages that is not available within the R database, and they have to be installed from a repository called Bioconductor
@@ -52,7 +52,8 @@ otu_table <- read.delim("./ninja_otutable.txt", header = T, row.names = 1)
 str(otu_table)
 
 #Read last col, and remove if taxonomy
-otu_table[,length(otu_table)]
+otu_table[,length(otu_table)] #if taxonomy is displayed in last column, run next command
+otu_table <- otu_table[,1:length(otu_table)-1] #removes the last column
 otu_table <- as.data.frame(t(otu_table[,1:length(otu_table)-1]))
 
 #Load mapping file containing groups for samples and make it available for R in the global environment
